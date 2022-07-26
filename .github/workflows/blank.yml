@@ -34,3 +34,5 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+      - name: build image
+        run: docker build -t demo-image:v0.1.0 .
