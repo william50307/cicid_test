@@ -17,7 +17,8 @@ stages:
 
 build:
   stage: build
-  tags: docker
+  tags: 
+    - docker
   only:
     - dev
     - main
@@ -29,7 +30,8 @@ build:
 
 test:
   stage: test
-  tags: docker
+  tags: 
+    - docker
   only:
     - dev
     - main
@@ -41,7 +43,8 @@ test:
 
 publish:
   stage: publish
-  tags: docker
+  tags: 
+    - docker
   only:
     - main
   script:
@@ -49,7 +52,8 @@ publish:
 
 stg-deploy:
   stage: stg-deploy
-  tags: docker
+  tags: 
+    - docker
   only:
     - main
   script:
@@ -57,7 +61,8 @@ stg-deploy:
 
 prod-deploy:
   stage: prod-deploy
-  tags: docker
+  tags: 
+    - docker
   only:
     - main
   script:
