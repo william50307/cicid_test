@@ -1,5 +1,9 @@
 image: docker
 
+job:
+  tags:
+    - docker
+
 services:
   - docker:dind
 
