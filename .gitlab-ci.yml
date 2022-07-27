@@ -3,9 +3,6 @@ image: docker
 services:
   - docker:dind
 
-job:
-  tags:
-    - docker
 
 variables:
   IMAGE_NAME: node-project
@@ -20,6 +17,7 @@ stages:
 
 build:
   stage: build
+  tags: docker
   only:
     - dev
     - main
@@ -31,6 +29,7 @@ build:
 
 test:
   stage: test
+  tags: docker
   only:
     - dev
     - main
@@ -42,6 +41,7 @@ test:
 
 publish:
   stage: publish
+  tags: docker
   only:
     - main
   script:
@@ -49,6 +49,7 @@ publish:
 
 stg-deploy:
   stage: stg-deploy
+  tags: docker
   only:
     - main
   script:
@@ -56,6 +57,7 @@ stg-deploy:
 
 prod-deploy:
   stage: prod-deploy
+  tags: docker
   only:
     - main
   script:
