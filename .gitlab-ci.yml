@@ -2,7 +2,10 @@ image: docker
 
 services:
   - docker:dind
- 
+
+default:
+  tags: docker
+
 variables:
   IMAGE_NAME: node-project
   CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
