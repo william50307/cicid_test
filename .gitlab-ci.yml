@@ -3,8 +3,6 @@ image: docker
 services:
   - docker:dind
 
-default:
-  tags: docker
 
 variables:
   IMAGE_NAME: node-project
