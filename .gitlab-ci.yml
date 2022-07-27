@@ -1,46 +1,59 @@
+image: docker
+
+services:
+  - docker:dind
+ 
+variables:
+  IMAGE_NAME: node-project
+  CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+
 stages:
   - build
-  - deploy
   - test
+  - publish
+  - stg-deploy
   - prod-deploy
 
-build-for-testing:
+build:
   stage: build
   only:
-    - develop
+    - dev
     - master
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - echo "build for testing"
+    - docker build -t $CI_IMAGE .
+    - docker push $CI_IMAGE
 
-prod-build:
-  stage: build
-  only:
-    - production
-  script:
-    - echo "build for production"
-    
-deploy-for-testing:
-  stage: deploy
-  only:
-    - develop
-    - master
-    - production
-  script:
-    - echo "deploy for testing"
-
-testing:
+test:
   stage: test
   only:
-    - develop
+    - dev
     - master
-    - production
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - echo "auto testing"
+    - docker pull $CI_IMAGE
+    - docker run $CI_IMAGE echo "run test script here"
+
+publish:
+  stage: publish
+  only:
+    - master
+  script:
+    - echo "publish job"
+
+stg-deploy:
+  stage: stg-deploy
+  only:
+    - master
+  script:
+    - echo "Staging deploy job"
 
 prod-deploy:
   stage: prod-deploy
   only:
-    - production
+    - master
   script:
-    - echo "deploy to production server"
+    - echo "Production deploy job"
   when: manual
