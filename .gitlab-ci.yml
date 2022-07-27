@@ -3,6 +3,9 @@ image: docker
 services:
   - docker:dind
 
+job:
+  tags:
+    - docker
 
 variables:
   IMAGE_NAME: node-project
