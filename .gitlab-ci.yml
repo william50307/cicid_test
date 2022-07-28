@@ -24,8 +24,22 @@
 #     DOCKER_TLS_CERTDIR: ""
 
 
+
+
+
+
+
+stages:
+  - build
+  - test
+  - publish
+  - stg-deploy
+  - prod-deploy
+
 build:docker:
   image: docker:20-dind
+  tags: 
+    - docker
   variables:
     # using "docker" as the host is only possible if you alias the service below
     DOCKER_HOST: tcp://docker:2375 
@@ -52,29 +66,17 @@ build:docker:
     - docker push ${CONTAINER_IMAGE}:latest
     - docker push ${CONTAINER_IMAGE}:$BUILD_VERSION
 
-
-
-
-
-stages:
-  - build
-  - test
-  - publish
-  - stg-deploy
-  - prod-deploy
-
-build:
-  stage: build
-  tags: 
-    - docker
-  only:
-    - dev
-    - main
-  before_script:
-   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build -t $CI_IMAGE .
-    - docker push $CI_IMAGE
+  # stage: build
+  # tags: 
+  #   - docker
+  # only:
+  #   - dev
+  #   - main
+  # before_script:
+  #  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  # script:
+  #   - docker build -t $CI_IMAGE .
+  #   - docker push $CI_IMAGE
 
 test:
   stage: test
