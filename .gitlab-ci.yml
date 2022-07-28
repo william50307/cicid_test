@@ -19,31 +19,31 @@ stages:
   - stg-deploy
   - prod-deploy
 
-# build:
-#   stage: build
-#   tags: 
-#     - docker
-#   only:
-#     - dev
-#     - main
-#   before_script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#   script:
-#     - docker build -t $CI_IMAGE .
-#     - docker push $CI_IMAGE
+build:
+  stage: build
+  tags: 
+    - docker
+  only:
+    - dev
+    - main
+  #before_script:
+  #  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $CI_IMAGE .
+    #- docker push $CI_IMAGE
 
-# test:
-#   stage: test
-#   tags: 
-#     - docker
-#   only:
-#     - dev
-#     - main
-#   before_script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#   script:
-#     - docker pull $CI_IMAGE
-#     - docker run $CI_IMAGE echo "run test script here"
+test:
+  stage: test
+  tags: 
+    - docker
+  only:
+    - dev
+    - main
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_IMAGE
+    - docker run $CI_IMAGE echo "run test script here"
 
 publish:
   stage: publish
