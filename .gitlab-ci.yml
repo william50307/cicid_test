@@ -3,7 +3,7 @@ image: docker
 services:
   #- docker:19-dind
   - docker:20-dind
-    command: ["--tls=false"]
+    command: - "--tls=false"
 
 
 # default: 
