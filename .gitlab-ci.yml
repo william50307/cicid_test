@@ -3,9 +3,9 @@ image: docker
 services:
   - docker:dind
 
-default: 
-  tags:
-    - docker
+# default: 
+#   tags:
+#     - docker
 
 
 variables:
