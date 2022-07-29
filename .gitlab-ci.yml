@@ -5,8 +5,8 @@ services:
 
 
 variables:
-  # IMAGE_NAME: node-project
-  # CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+  IMAGE_NAME: testing-project
+  CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
 
 
 stages:
