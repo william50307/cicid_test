@@ -1,32 +1,12 @@
-# image: docker
+image: docker
 
-# services:
-#   - docker:20-dind
-
-
-
-# # default: 
-# #   tags:
-# #     - docker
+services:
+  - docker:20-dind
 
 
-# variables:
-#   # IMAGE_NAME: node-project
-#   # CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
-#   # DOCKER_HOST: tcp://docker:2375
-#   # DOCKER_DRIVER: overlay2
-#   # DOCKER_TLS_CERTDIR: ""
-#   DOCKER_HOST: tcp://docker:2375 
-#     # could be wrong here but although Docker defaults to overlay2, 
-#     # Docker-in-Docker (DIND) does not according to the following GitLab doc: 
-#     # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-the-overlayfs-driver
-#     DOCKER_DRIVER: overlay2
-#     DOCKER_TLS_CERTDIR: ""
-
-
-
-
-
+variables:
+  # IMAGE_NAME: node-project
+  # CI_IMAGE: $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
 
 
 stages:
@@ -36,52 +16,23 @@ stages:
   - stg-deploy
   - prod-deploy
 
-build:docker:
-  image: docker:20-dind
+build:
+  stage: build
   tags: 
-    - docker
-  variables:
-    # using "docker" as the host is only possible if you alias the service below
-    DOCKER_HOST: tcp://docker:2375 
-    # could be wrong here but although Docker defaults to overlay2, 
-    # Docker-in-Docker (DIND) does not according to the following GitLab doc: 
-    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-the-overlayfs-driver
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-  services:
-    - name: docker:20-dind
-      alias: docker
-      # in our experience although you'd assume this would be sufficient, this did 
-      # nothing to prevent connection errors without `DOCKER_TLS_CERTDIR` being set 
-      # to an empty string, and I would call that beyond mildly infuriating.
-      command: ["--tls=false"]
+    - gitlab-org-docker
+  only:
+    - dev
+    - main
   before_script:
-    - echo ${REGISTRY_PASSWORD} | docker login ${REGISTRY} -u ${REGISTRY_USER} -- 
-  password-stdin
-    - *version_info
+   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build .
-      --tag ${CONTAINER_IMAGE}:$BUILD_VERSION
-      --tag ${CONTAINER_IMAGE}:latest
-    - docker push ${CONTAINER_IMAGE}:latest
-    - docker push ${CONTAINER_IMAGE}:$BUILD_VERSION
-
-  # stage: build
-  # tags: 
-  #   - docker
-  # only:
-  #   - dev
-  #   - main
-  # before_script:
-  #  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  # script:
-  #   - docker build -t $CI_IMAGE .
-  #   - docker push $CI_IMAGE
+    - docker build -t $CI_IMAGE .
+    - docker push $CI_IMAGE
 
 test:
   stage: test
   tags: 
-    - docker
+    - gitlab-org-docker
   only:
     - dev
     - main
@@ -94,7 +45,7 @@ test:
 publish:
   stage: publish
   tags: 
-    - docker
+    - gitlab-org-docker
   only:
     - main
   script:
@@ -103,7 +54,7 @@ publish:
 stg-deploy:
   stage: stg-deploy
   tags: 
-    - docker
+    - gitlab-org-docker
   only:
     - main
   script:
@@ -112,7 +63,7 @@ stg-deploy:
 prod-deploy:
   stage: prod-deploy
   tags: 
-    - docker
+    - gitlab-org-docker
   only:
     - main
   script:
