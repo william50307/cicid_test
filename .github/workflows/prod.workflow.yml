@@ -48,7 +48,7 @@ jobs:
         az logout
 
 
-  build:
+  pytest:
 
     runs-on: ubuntu-latest
     strategy:
