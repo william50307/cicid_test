@@ -39,7 +39,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'fastapicdtest'
-        images: 'fastapicd-fastapicd-staging.azurecr.io/fastapi-cd:${{ github.sha }}'
+        images: 'fastapicdtest-fastapicdtest-staging.azurecr.io/fastapi-cd:${{ github.sha }}'
         slot-name: 'fastapicdtest-staging'
         
         
