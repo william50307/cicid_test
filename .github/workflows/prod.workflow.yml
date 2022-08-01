@@ -38,7 +38,7 @@ jobs:
     - name: Deploy to App Service
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'fastapicdtest'
+        app-name: 'fastapi-cd'
         images: 'fastapicdtest.azurecr.io/fastapi-cd:${{ github.sha }}'
         slot-name: 'fastapicdtest-staging'
         
