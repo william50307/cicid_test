@@ -2,11 +2,15 @@ from typing import Union
 import uvicorn
 import os
 from fastapi import FastAPI
+from utils import PrometheusMiddleware, metrics, setting_otlp
+
 
 # port = os.environ["PORT"]
 port = '8000'
-
+APP_NAME = 'fastapi_cicd_testing'
 app = FastAPI()
+app.add_middleware(PrometheusMiddleware, app_name=APP_NAME)
+app.add_route("/metrics", metrics)
 
 
 @app.get("/")
