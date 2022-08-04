@@ -1,24 +1,18 @@
-name: cicd workflow on gcd
+name: Push to GCR GitHub Action
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  submit-docker-image-to-gcd:
+  build-and-push-to-gcr:
     runs-on: ubuntu-latest
-    
     steps:
-      - name:
-        run: gcloud builds submit --tag gcr.io/${{ secrets.PROJECT_ID }}/gcp-api
-
-      # - name: Build, Push and Deploy service to Google Cloud Run
-      #   uses: ThomFree/action-build-cloud-run@1.1
-      #   with:
-      #   gcloud config set project medium-286319
-      #     image: [your-hostname]/[your-project]/[image]
-      #     service: [your-service]
-      #     project: [your-project]
-      #     region: [gcp-region]
-      #     service key: ${{ secrets.GCLOUD_AUTH }}
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/push-to-gcr-github-action@v4.1
+        with:
+          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text
+          registry: gcr.io
+          project_id: ${{ secrets.PROJECT_ID }}
+          image_name: fastapi
+          image_tag: latest,v1
+          # dockerfile: ./docker/Dockerfile.prod
+          # context: ./docker
