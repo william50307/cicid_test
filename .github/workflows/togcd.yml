@@ -3,7 +3,7 @@ name: Push to GCR GitHub Action
 on: [push]
 
 jobs:
-  build-and-push-to-gcr:
+  build-and-push-to-gcr-and-deploy-to-cloud-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,3 +16,14 @@ jobs:
           image_tag: latest,v1
           # dockerfile: ./docker/Dockerfile.prod
           # context: ./docker
+
+
+      - name: Deploy service to Cloud Run
+        uses: stefda/action-cloud-run@v1.6
+        with:
+          image: gcr.io/${{ secrets.PROJECT_ID }}/fastapi
+          service: fastapi
+          project: ${{ secrets.PROJECT_ID }}
+          region: asia-east1
+          #env: [path-to-env-file]
+          service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
