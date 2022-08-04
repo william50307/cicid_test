@@ -1,0 +1,24 @@
+name: cicd workflow on gcd
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  submit docker image to gcd:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name:
+        run: gcloud builds submit --tag gcr.io/${{ secrets.PROJECT_ID }}/gcp-api
+
+      # - name: Build, Push and Deploy service to Google Cloud Run
+      #   uses: ThomFree/action-build-cloud-run@1.1
+      #   with:
+      #   gcloud config set project medium-286319
+      #     image: [your-hostname]/[your-project]/[image]
+      #     service: [your-service]
+      #     project: [your-project]
+      #     region: [gcp-region]
+      #     service key: ${{ secrets.GCLOUD_AUTH }}

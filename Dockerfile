@@ -3,6 +3,7 @@ FROM python:3.7.9-slim
 
 # copy files to the /app folder in the container
 COPY ./main.py /app/main.py
+COPY ./utils.py /app/utils.py
 COPY ./Pipfile /app/Pipfile
 COPY ./Pipfile.lock /app/Pipfile.lock
 
