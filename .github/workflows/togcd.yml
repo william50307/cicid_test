@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  submit docker image to gcd:
+  submit-docker-image-to-gcd:
     runs-on: ubuntu-latest
     
     steps:
