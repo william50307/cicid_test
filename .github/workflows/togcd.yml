@@ -29,4 +29,6 @@ jobs:
           service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
       
       - name: pytest unit test
-        run: pytest
+        run: |
+        pip install pytest
+        pytest
