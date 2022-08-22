@@ -27,3 +27,6 @@ jobs:
           region: asia-east1
           #env: [path-to-env-file]
           service key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+      
+      - name: pytest unit test
+        run: pytest
